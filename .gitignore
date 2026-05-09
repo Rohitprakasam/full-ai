@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+.env
+
+# Storage/Data
+uploads/
+*.db
+*.log
+
+# Node (Frontend)
+node_modules/
+.next/
+out/
+build/
+dist/
+
+# System
+.DS_Store
+Thumbs.db
