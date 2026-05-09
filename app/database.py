@@ -16,3 +16,14 @@ async def init_db():
         database=database,
         document_models=[User, Case, Evidence, TimelineEvent, AuditLog]
     )
+
+    # FIX 4: Create MongoDB text indexes for keyword search
+    await database["evidence"].create_index(
+        [("ai_summary", "text"), ("ai_raw_text", "text"), ("type", "text")],
+        name="evidence_text_search",
+        weights={"ai_summary": 10, "type": 5, "ai_raw_text": 1}
+    )
+    await database["cases"].create_index(
+        [("title", "text"), ("crime_type", "text")],
+        name="case_text_search"
+    )

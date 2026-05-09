@@ -1,9 +1,9 @@
 from datetime import datetime, timedelta
-from typing import Any, Union
-from jose import jwt
+from typing import Any, Union, Optional
+from jose import jwt, JWTError
 from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, Request
 from app.config import settings
 from app.models.user import User
 
@@ -38,8 +38,24 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> User:
             raise credentials_exception
     except Exception:
         raise credentials_exception
-        
     user = await User.find_one(User.email == email)
     if user is None:
         raise credentials_exception
     return user
+
+
+async def get_current_user_from_request(request: Request) -> Optional[str]:
+    """Soft version for middleware — returns user ObjectId or None, never raises."""
+    try:
+        auth_header = request.headers.get("Authorization", "")
+        if not auth_header.startswith("Bearer "):
+            return None
+        token = auth_header.split(" ")[1]
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        email = payload.get("sub")
+        if not email:
+            return None
+        user = await User.find_one(User.email == email)
+        return user.id if user else None
+    except (JWTError, Exception):
+        return None

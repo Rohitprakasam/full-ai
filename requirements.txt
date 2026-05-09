@@ -1,4 +1,4 @@
-# === Person 1 Dependencies ===
+# === Core ===
 fastapi[standard]
 uvicorn
 motor==3.4.0
@@ -12,34 +12,41 @@ pydantic
 pydantic-settings
 python-multipart
 
-# === Person 2 AI Dependencies ===
-# Featherless AI (OpenAI-compatible)
+# === AI (Featherless) ===
 openai>=1.50.0
 
-# OCR & Document Processing
+# === OCR & Documents ===
 paddlepaddle>=2.6.0
 paddleocr>=2.8.0
 PyMuPDF>=1.24.0
 
-# NLP
+# === NLP ===
 spacy>=3.7.0
 
-# Computer Vision
+# === Computer Vision ===
 opencv-python>=4.10.0
 ultralytics>=8.2.0
 deep-sort-realtime>=1.3.0
 
-# Graph Database
+# === Graph + Vector ===
 neo4j>=5.23.0
-
-# Vector Search
 pymilvus>=2.4.0
 
-# Voice Transcription
+# === Voice ===
 faster-whisper>=1.0.0
 
-# HTTP Client
-httpx>=0.27.0
+# === MFA ===
+pyotp>=2.9.0
+qrcode[pil]>=7.4.0
 
-# MongoDB sync driver (for Celery workers)
+# === Face Recognition ===
+deepface>=0.0.90
+tf-keras>=2.16.0
+
+# === HTTP + Sync Mongo ===
+httpx>=0.27.0
 pymongo>=4.7.0
+
+# === Testing ===
+pytest>=8.0.0
+pytest-asyncio>=0.23.0
